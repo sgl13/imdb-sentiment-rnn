@@ -99,6 +99,12 @@ streamlit run main.py
 ```
 Then open the local URL shown in your terminal, type in a movie review, and get an instant **Positive / Negative** prediction with a confidence score.
 
+**Example:**
+
+| Input Review | Sentiment | Prediction Score |
+|---|---|---|
+| "This movie was fantastic! The acting was great and the plot was thrilling." | Positive | 0.7989 |
+
 ---
 
 ## 🖼️ Screenshots
@@ -121,25 +127,26 @@ Then open the local URL shown in your terminal, type in a movie review, and get 
 
 | Metric              | Score        |
 |----------------------|-------------|
-| Training Accuracy (best epoch, ~4/10) | 88.67% |
-| Validation Accuracy (best epoch, ~4/10) | 81.10% |
-| Test Accuracy        | 81.22% |
-| Test Loss            | 0.4268 |
+| Training Accuracy (best epoch, ~5/10) | 88.95% |
+| Validation Accuracy (best epoch, ~5/10) | 81.14% |
+| Validation Loss (best epoch, ~5/10) | 0.4547 |
 | Loss Function         | Binary Crossentropy |
 | Optimizer             | Adam        |
 
-**Training history (epochs 1–6 of 10):**
+**Training history:**
 
 | Epoch | Train Acc | Train Loss | Val Acc | Val Loss |
 |---|---|---|---|---|
-| 1 | 68.47% | 0.5766 | 73.40% | 0.5366 |
-| 2 | 82.74% | 0.4002 | 73.64% | 0.5211 |
-| 3 | 85.04% | 0.3677 | 80.66% | 0.4367 |
-| 4 | 88.67% | 0.2847 | **81.10%** | 0.5035 |
-| 5 | 91.07% | 0.2329 | 80.98% | 0.4852 |
-| 6 | 92.58% | 0.1984 | 74.34% | 0.5403 |
+| 1 | 61.08% | 0.6402 | 76.88% | 0.4897 |
+| 2 | 72.51% | 0.5412 | 61.94% | 0.6443 |
+| 3 | 76.75% | 0.4849 | 78.38% | 0.4841 |
+| 4 | 83.69% | 0.3718 | **81.94%** | 0.4596 |
+| 5 | 88.95% | 0.2774 | 81.14% | **0.4547** |
+| 6 | 78.25% | 0.4762 | 74.66% | 0.5528 |
+| 7 | 85.43% | 0.3394 | 78.50% | 0.5138 |
+| 8 | 87.33% | 0.3065 | 78.58% | 0.5256 |
 
-> ⚠️ Epochs 7–10 weren't captured, but the pattern is already clear: **validation accuracy peaks at epoch 4 (81.10%)** — which lines up almost exactly with the reported test accuracy of 81.22% — then degrades as training accuracy keeps climbing toward 92.58% by epoch 6. This is a textbook overfitting curve: past epoch 4, the model is increasingly memorizing training reviews rather than learning generalizable patterns. The saved `simple_rnn_imdb.h5` weights most likely correspond to an early epoch (around 4) rather than the final epoch of training — worth confirming if you used `ModelCheckpoint` or early stopping. For a future revision, consider adding early stopping (`patience=1-2` on `val_loss`) or dropout to prevent this degradation.
+> ⚠️ Training stopped at epoch 8 of 10 — almost certainly an `EarlyStopping` callback monitoring `val_loss`, since validation loss peaked (best) at epoch 5 (0.4547) and didn't improve for the following epochs. Best validation accuracy (81.94%) came at epoch 4, closely tracking the standalone test accuracy reported earlier (81.22%).
 
 ---
 
